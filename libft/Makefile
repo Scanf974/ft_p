@@ -113,7 +113,7 @@ dor:
 	@mkdir $(OBJ_DIR) 2> /dev/null || env -i
 
 ../.obj/libft/%.o: %.c includes/libft.h includes/get_next_line.h
-	@echo "\033[36m   $<"
+	@echo "\033[36m   libft/$<"
 	@$(CC) -o $@ $(FLAGS) -I includes/ -c $<
 
 clean:

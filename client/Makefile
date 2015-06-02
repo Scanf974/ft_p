@@ -1,20 +1,20 @@
 CC = gcc
-NAME = serveur
+NAME = client
 CFLAGS = -Wextra -Wall -Werror
 
 SRC_MAIN = main.c
 
 SRC = $(SRC_MAIN)
 
-HEADER = includes/server.h
+HEADER = includes/client.h
 DIR_HEADERS = -I includes/ \
 			  -I ../includes/ \
 			  -I ../libft/includes/
 
-OBJ = $(SRC:%.c=../.obj/server/%.o)
+OBJ = $(SRC:%.c=../.obj/client/%.o)
 
 OBJ_DIR = ../.obj/ \
-		  ../.obj/server/
+		  ../.obj/client/
 
 LIBFT = -L../libft -lft
 
@@ -33,8 +33,8 @@ dor:
 libs:
 	@make -C ../libft/
 
-../.obj/server/%.o: %.c $(HEADER)
-	@echo "\033[33m 	server/$<"
+../.obj/client/%.o: %.c $(HEADER)
+	@echo "\033[33m 	client/$<"
 	@$(CC) $(CFLAGS) -o $@ $(DIR_HEADERS) -c $< -g
 
 clean:

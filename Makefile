@@ -4,7 +4,10 @@ CLIENT_NAME = client
 
 .PHONY: client serveur all clean fclean re
 
-all: serveur
+all: serveur client
 
 serveur:
 	@make -C server/
+
+client:
+	@make -C client/
