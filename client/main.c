@@ -4,11 +4,11 @@ static void	ft_usage(char *str)
 {
 	ft_putstr("Usage: ");
 	ft_putstr(str);
-	ft_putstr(" <port>\n");
+	ft_putstr(" <addr> <port>\n");
 	exit(1);
 }
 
-static int	ft_create_server(int port)
+static int	ft_create_client(char *addr, int port)
 {
 	int						sock;
 	struct protoent			*proto;
@@ -20,13 +20,12 @@ static int	ft_create_server(int port)
 	sock = socket(PF_INET, SOCK_STREAM, proto->p_proto);
 	sin.sin_family = AF_INET;
 	sin.sin_port = htons(port);
-	sin.sin_addr.s_addr = htonl(INADDR_ANY);
-	if (bind(sock, (const struct sockaddr *)&sin, sizeof(sin)) == -1)
+	sin.sin_addr.s_addr = inet_addr(addr);
+	if (connect(sock, (const struct sockaddr *)&sin, sizeof(sin)) == -1)
 	{
-		ft_putendl_fd("Error: bind", 2);
+		ft_putendl_fd("Error: connect", 2);
 		exit(3);
 	}
-	listen(sock, 42);
 	return (sock);
 }
 
@@ -34,23 +33,12 @@ int		main(int ac, char **av)
 {
 	int					port;
 	int					sock;
-	int					cs;
-	struct sockaddr_in	csin;
-	unsigned int		cslen;
-	int					ret;
-	char				buf[1025];
 
-	if (ac != 2)
+	if (ac != 3)
 		ft_usage(av[0]);
-	port = ft_atoi(av[1]);
-	sock = ft_create_server(port);
-	cs = accept(sock, (struct sockaddr *)&csin, &cslen);
-	while ((ret = read(cs, buf, 1024)) > 0)
-	{
-		buf[ret] = 0;
-		ft_putstr(buf);
-	}
-	close(cs);
+	port = ft_atoi(av[2]);
+	sock = ft_create_client(av[1], port);
+	write(sock, "Bonjour\n", 8);
 	close(sock);
 	return (0);
 }
