@@ -7,4 +7,4 @@ CLIENT_NAME = client
 all: serveur
 
 serveur:
-	make -C server/
+	@make -C server/
